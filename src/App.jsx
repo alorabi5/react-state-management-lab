@@ -8,6 +8,8 @@ const App = () => {
 
   const [team, setTeam] = useState([])
   const [money, setMoney] = useState(100)
+  const [totalStrength, setTotalStrength] = useState(0);
+  const [totalAgility, setTotalAgility] = useState(0)
   const [zombieFighters, setZombieFighters] = useState([
     {
       name: "Survivor",
@@ -88,10 +90,21 @@ const App = () => {
     if (money >= newTeamFighter.price) {
       setMoney(money - newTeamFighter.price)
       setTeam([...team, newTeamFighter]);
+      setTotalStrength(totalStrength + newTeamFighter.strength);
+      setTotalAgility(totalAgility + newTeamFighter.agility);
     } else {
       console.log("Not enough money");
     }
   };
+
+const handleRemoveFighter = (teamFighter) => {
+
+  setMoney(money + teamFighter.price);
+  setTeam(team.filter((member) => member !== teamFighter));
+  setTotalStrength(totalStrength - teamFighter.strength);
+  setTotalAgility(totalAgility - teamFighter.agility);
+  
+};
 
   
 
@@ -106,14 +119,15 @@ const App = () => {
   ));
 
 const ourTeam = team.map((member) => (
-  
-  
   <li>
     <img src={member.img} alt="" />
     <h3>Name: {member.name}</h3>
     <p>Price: {member.price}</p>
     <p>Strength: {member.strength}</p>
     <p>Agility: {member.agility}</p>
+    <button onClick={() => handleRemoveFighter(member)}>
+      Remove
+    </button>
   </li>
 ));
 
@@ -121,12 +135,13 @@ const ourTeam = team.map((member) => (
   return (
     <>
       <h2>Money: {money}</h2>
+      <h2>Team Strength: {totalStrength}</h2>
+      <h2>Team Agility: {totalAgility}</h2>
       <ul>{zombieFighterList}</ul>
 
-    <h1>Team Member</h1>
-    
-    
-      {team.length !== 0? <ul>{ourTeam}</ul> : "No team members.."}
+      <h1>Team Member</h1>
+
+      {team.length !== 0 ? <ul>{ourTeam}</ul> : "Pick some team members!"}
     </>
   );
 };

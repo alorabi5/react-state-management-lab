@@ -15,6 +15,8 @@ const ZombieFighters = (props) => {
         <button onClick={() => props.handleAddFighter(props.zombieFighter)}>
           Add
         </button>
+
+        
       </>
     );
 }
